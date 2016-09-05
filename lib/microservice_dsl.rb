@@ -1,4 +1,5 @@
 require "microservice_dsl/version"
+require "typhoeus"
 
 module Kernel
   private
