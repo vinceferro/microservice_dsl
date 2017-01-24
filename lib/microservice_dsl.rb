@@ -10,7 +10,7 @@ module Kernel
     url = ENV["#{microservice.upcase}_URL"] || "http://#{microservice}.#{ENV['MS_DOMAIN'] || Rails.env}:#{ENV["MS_#{microservice.upcase}_PORT"] || '3000'}"
     url << "/#{args[:path]}" if args[:path]
     body = (args[:body].is_a? String) ? args[:body] : args[:body].to_json if args[:body]
-    Typhoeus::Request.new(url, method: args[:method] || :get, headers: MicroserviceDSL.default_headers, body: body, params: args[:params], timeout: ENV['MS_DEFAULT_TIMEOUT'] || 10)
+    Typhoeus::Request.new(url, method: args[:method] || :get, headers: MicroserviceDSL.default_headers.merge(args[:headers] || {}), body: body, params: args[:params], timeout: ENV['MS_DEFAULT_TIMEOUT'] || 10)
   end
 
   def call_microservice(microservice, args={})
