@@ -5,8 +5,8 @@ module MicroserviceDSL
     end
 
     def call(env)
-      if env[self.rack_hop_header] && !env[self.rack_hop_header].blank?
-        MicroserviceDSL.current_hop = env[self.rack_hop_header]
+      if env[MicroserviceDSL.rack_hop_header] && !env[MicroserviceDSL.rack_hop_header].blank?
+        MicroserviceDSL.current_hop = env[MicroserviceDSL.rack_hop_header]
       else
         MicroserviceDSL.current_hop = "1"
       end
