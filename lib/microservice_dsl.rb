@@ -26,7 +26,7 @@ module MicroserviceDSL
   end
   
   def self.rack_hop_header
-    "HTTP_#{self.hop_header.upcase.replace("-", "_")}"
+    "HTTP_#{self.hop_header.upcase.gsub("-", "_")}"
   end
   
   def self.default_headers
