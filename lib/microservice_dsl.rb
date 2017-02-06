@@ -60,3 +60,4 @@ module MicroserviceDSL
   end
 end
 
+require "microservice_dsl/railtie" if defined?(Rails)
