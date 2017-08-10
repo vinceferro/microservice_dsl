@@ -43,6 +43,7 @@ module Kernel
 
   def call_microservice(microservice, args = {})
     request = prepare_microservice_request microservice, args
+    response = nil
     MicroserviceDSL::Instrument.instrument('run.microservice_dsl', 'Call microservice', request.url) do
       response = request.run
     end
