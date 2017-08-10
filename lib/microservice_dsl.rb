@@ -12,7 +12,7 @@ module Kernel
 
     url = ENV["#{microservice.upcase}_URL"] || "http://#{microservice}.#{ENV['MS_DOMAIN'] || Rails.env}:#{ENV["MS_#{microservice.upcase}_PORT"] || '3000'}"
     url << "/#{args[:path]}" if args[:path]
-    body = (args[:body].is_a? String) ? args[:body] : args[:body].to_json if args[:body]
+    body = args[:body].is_a? String ? args[:body] : args[:body].to_json if args[:body]
     headers = MicroserviceDSL.default_headers.merge(args[:headers] || {}).merge(MicroserviceDSL.hop_header => MicroserviceDSL.hop_string)
     method = args[:method] || :get
     timeout = ENV['MS_DEFAULT_TIMEOUT'].try(:to_f) || 0
@@ -42,7 +42,9 @@ module Kernel
 
   def call_microservice(microservice, args = {})
     request = prepare_microservice_request microservice, args
-    response = request.run
+    MicroserviceDSL::Instrument.instrument('run.microservice_dsl', 'Call microservice', request.url) do
+      response = request.run
+    end
     [response.body, response.headers['content-type'], response.code]
   end
 end
@@ -62,9 +64,9 @@ module MicroserviceDSL
 
   def self.caching?
     if ENV['MS_CACHE_URL']
-      return true
+      true
     else
-      return false
+      false
     end
   end
 
