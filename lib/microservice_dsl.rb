@@ -1,4 +1,5 @@
 require 'microservice_dsl/version'
+require 'microservice_dsl/instrument'
 require 'typhoeus'
 require 'json'
 require 'digest'
